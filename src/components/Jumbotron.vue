@@ -30,7 +30,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <section
+    <section id="home"
         class="relative w-full h-screen flex items-center justify-center overflow-hidden bg-center bg-no-repeat bg-cover"
         :style="{
             backgroundImage: `url(${bgImage})`,
@@ -48,10 +48,11 @@ onMounted(() => {
                 We are a team of skilled designers creating landing pages, company profiles, custom websites, and
                 providing network configuration solutions to elevate your business online.
             </p>
-            <a href="#"
-                class="inline-block bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold px-6 py-3 rounded-lg shadow-lg hover:scale-105 transform transition-all duration-300">
+            <a href="https://wa.me/6285117529191?text=Halo%2C%20saya%20ingin%20dibuatkan%20aplikasi"
+                class="inline-block bg-gradient-to-r from-red-500 to-red-700 text-white font-semibold px-6 py-3 rounded-lg shadow-lg hover:scale-105 transform transition-all duration-300">
                 Get Started
             </a>
+
         </div>
     </section>
 </template>

@@ -4,7 +4,7 @@ import { useRoute } from "vue-router";
 
 const isOpen = ref(false);
 const isScrolled = ref(false);
-const route = useRoute(); // 🔥 cek route aktif
+const route = useRoute();
 
 const toggleMenu = () => {
     isOpen.value = !isOpen.value;
@@ -22,21 +22,28 @@ onUnmounted(() => {
 });
 
 const menuItems = [
-    { name: "Home", path: "/" },
-    { name: "About", path: "/about" },
-    { name: "Service", path: "/service" },
-    { name: "Portofolio", path: "/portofolio" },
-    { name: "Team", path: "/team" },
-    { name: "Contact", path: "/contact" },
+    { name: "Home", path: "#home" },
+    { name: "About", path: "#about" },
+    { name: "Service", path: "#service" },
+    { name: "Portofolio", path: "#portofolio" },
+    { name: "Team", path: "#team" },
+    { name: "Contact", path: "#contact" },
 ];
+
+// Smooth scroll ke element id
+const scrollToSection = (id) => {
+    const el = document.querySelector(id);
+    if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+    }
+    isOpen.value = false;
+};
 </script>
 
 <template>
     <header :class="[
         'fixed w-full z-50 transition-all duration-500',
-        isScrolled
-            ? 'bg-gradient-to-r from-gray-800 via-gray-900 to-black backdrop-blur-md shadow-lg text-white'
-            : ' text-white'
+        isScrolled ? 'bg-white/70 backdrop-blur shadow-xl' : 'bg-white'
     ]">
         <div class="max-w-7xl mx-auto flex items-center justify-between px-4 py-3 md:py-4">
             <!-- Logo -->
@@ -48,26 +55,32 @@ const menuItems = [
 
             <!-- Menu Desktop -->
             <nav class="hidden md:flex space-x-6">
-                <router-link v-for="item in menuItems" :key="item.name" :to="item.path" :class="[
-                    'transition-all duration-300 transform hover:-translate-y-1 hover:scale-105',
-                    route.path === item.path
-                        ? 'text-red-500 font-semibold'
-                        : 'hover:text-red-500'
-                ]">
-                    {{ item.name }}
-                </router-link>
+                <template v-for="item in menuItems" :key="item.name">
+                    <router-link v-if="!item.path.startsWith('#')" :to="item.path" :class="[
+                        'transition-all duration-300 transform hover:-translate-y-1 hover:scale-105',
+                        route.path === item.path
+                            ? 'text-red-500 font-semibold'
+                            : 'text-gray-800 hover:text-red-500'
+                    ]">
+                        {{ item.name }}
+                    </router-link>
+                    <a v-else href="javascript:void(0)" @click="scrollToSection(item.path)"
+                        class="transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 text-gray-800 hover:text-red-500">
+                        {{ item.name }}
+                    </a>
+                </template>
             </nav>
 
             <!-- Hamburger Mobile -->
             <div class="md:hidden">
                 <button @click="toggleMenu" class="focus:outline-none">
-                    <svg v-if="!isOpen" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                    <svg v-if="!isOpen" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-800" fill="none"
                         viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M4 6h16M4 12h16M4 18h16" />
                     </svg>
-                    <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
+                    <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-800" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M6 18L18 6M6 6l12 12" />
                     </svg>
@@ -78,9 +91,9 @@ const menuItems = [
         <!-- Mobile Menu -->
         <transition name="slide-fade">
             <div v-if="isOpen"
-                class="md:hidden fixed top-0 right-0 w-3/4 max-w-xs h-full bg-gradient-to-b from-gray-800 to-gray-900/95 backdrop-blur-md text-white shadow-lg z-40 flex flex-col p-6">
+                class="md:hidden fixed top-0 right-0 w-3/4 max-w-xs h-full bg-white/90 backdrop-blur-md shadow-lg z-40 flex flex-col p-6">
                 <div class="flex justify-end mb-6">
-                    <button @click="isOpen = false" class="text-white hover:text-red-500 focus:outline-none">
+                    <button @click="isOpen = false" class="text-gray-800 hover:text-red-500 focus:outline-none">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -90,14 +103,19 @@ const menuItems = [
                 </div>
 
                 <nav class="flex flex-col space-y-4">
-                    <router-link v-for="(item, idx) in menuItems" :key="item.name" :to="item.path" :class="[
-                        'text-lg font-semibold transition-all duration-300 transform hover:scale-105',
-                        route.path === item.path
-                            ? 'text-red-500'
-                            : 'hover:text-red-500'
-                    ]" @click="isOpen = false" :style="{ transitionDelay: `${idx * 100}ms` }">
-                        {{ item.name }}
-                    </router-link>
+                    <template v-for="(item, idx) in menuItems" :key="item.name">
+                        <router-link v-if="!item.path.startsWith('#')" :to="item.path" :class="[
+                            'text-lg font-semibold transition-all duration-300 transform hover:scale-105',
+                            route.path === item.path ? 'text-red-500' : 'text-gray-800 hover:text-red-500'
+                        ]" @click="isOpen = false" :style="{ transitionDelay: `${idx * 100}ms` }">
+                            {{ item.name }}
+                        </router-link>
+                        <a v-else href="javascript:void(0)" @click="scrollToSection(item.path)"
+                            class="text-lg font-semibold transition-all duration-300 transform hover:scale-105 text-gray-800 hover:text-red-500"
+                            :style="{ transitionDelay: `${idx * 100}ms` }">
+                            {{ item.name }}
+                        </a>
+                    </template>
                 </nav>
             </div>
         </transition>

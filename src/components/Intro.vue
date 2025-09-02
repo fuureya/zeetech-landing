@@ -24,7 +24,7 @@ const services = [
 </script>
 
 <template>
-    <section
+    <section id="about"
         class="relative w-full bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white py-16 px-6 md:px-12 lg:px-20 overflow-hidden">
         <!-- Left Content -->
         <div class="grid md:grid-cols-2 gap-12 items-center relative z-10">
@@ -39,10 +39,10 @@ const services = [
                     We help your business appear professional, grow in the digital world,
                     and build a reliable and efficient network infrastructure.
                 </p>
-                <button
+                <a href="https://wa.me/6285117529191?text=Halo%2C%20saya%20ingin%20dibuatkan%20aplikasi"
                     class="px-6 py-3 rounded-full border-2 border-red-500 text-red-500 font-semibold hover:bg-red-500 hover:text-white transition-all duration-300 shadow-md hover:shadow-red-500/40">
-                    About Us <i class="fa-solid fa-arrow-right ml-2"></i>
-                </button>
+                    Get Started <i class="fa-solid fa-arrow-right ml-2"></i>
+                </a>
             </div>
 
             <!-- Services -->

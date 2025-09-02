@@ -24,7 +24,7 @@ const services = [
 </script>
 
 <template>
-    <section
+    <section id="service"
         class="relative w-full bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white py-20 px-6 md:px-12 lg:px-20 overflow-hidden">
 
         <!-- Title -->
